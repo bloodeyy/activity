@@ -2,25 +2,41 @@ import { DiscordSDK } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
 const CLIENT_ID = "1510641116528250990";
 
+const status = document.getElementById("status");
+
 const discordSdk = new DiscordSDK(CLIENT_ID);
 
-const status = document.getElementById("status");
+function setStatus(text) {
+    if (status) {
+        status.textContent = text;
+    }
+
+    console.log("[MOON ACTIVITY]", text);
+}
 
 async function start() {
     try {
-        status.textContent = "Connecting to Discord...";
+        setStatus("SDK loading...");
+
+        console.log("Discord SDK created");
+        console.log("Client ID:", CLIENT_ID);
+
+        setStatus("Connecting to Discord...");
 
         await discordSdk.ready();
 
-        status.textContent = "Connected to Discord ✅";
+        setStatus("Connected to Discord ✅");
 
-        console.log("Moon Activity connected!");
+        console.log("Discord SDK READY!");
         console.log("Instance ID:", discordSdk.instanceId);
 
     } catch (error) {
         console.error("Moon Activity error:", error);
 
-        status.textContent = "Discord connection failed ❌";
+        setStatus(
+            "Discord connection failed ❌\n" +
+            (error?.message || String(error))
+        );
     }
 }
 
