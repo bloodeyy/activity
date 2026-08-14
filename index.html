@@ -28,9 +28,7 @@
         }
 
         .logo {
-            width: 90px;
-            height: 90px;
-            border-radius: 24px;
+            font-size: 70px;
             margin-bottom: 20px;
         }
 
@@ -50,10 +48,11 @@
             border-radius: 14px;
             background: #1b1c20;
             border: 1px solid #292a30;
+            color: #57f287;
         }
 
-        .connected {
-            color: #57f287;
+        .error {
+            color: #ed4245;
         }
     </style>
 </head>
@@ -73,41 +72,259 @@
         </p>
 
         <div class="status">
-            <div class="connected">
-                ● Discord Connected
+            <div id="status">
+                Connecting to Discord...
             </div>
         </div>
 
     </div>
 
+
     <script type="module">
+
         import {
             DiscordSDK
         } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
+
+        // ==========================================
+        // CONFIG
+        // ==========================================
+
         const CLIENT_ID = "1510641116528250990";
+
+
+        // ==========================================
+        // DISCORD SDK
+        // ==========================================
 
         const discordSdk = new DiscordSDK(CLIENT_ID);
 
+        const status = document.getElementById("status");
+
+
+        // ==========================================
+        // START ACTIVITY
+        // ==========================================
+
         async function start() {
+
             try {
+
+                // ----------------------------------
+                // 1. CONNECT TO DISCORD
+                // ----------------------------------
+
+                status.textContent = "Connecting to Discord...";
 
                 await discordSdk.ready();
 
-                console.log("Moon Activity connected!");
-                console.log("Instance ID:", discordSdk.instanceId);
+                console.log("Discord SDK ready!");
+                console.log(
+                    "Instance ID:",
+                    discordSdk.instanceId
+                );
+
+
+                // ----------------------------------
+                // 2. AUTHORIZE USER
+                // ----------------------------------
+
+                status.textContent = "Authorizing...";
+
+                const { code } =
+                    await discordSdk.commands.authorize({
+
+                        client_id: CLIENT_ID,
+
+                        response_type: "code",
+
+                        state: "",
+
+                        prompt: "none",
+
+                        scope: [
+                            "identify",
+                            "rpc.activities.write"
+                        ]
+
+                    });
+
+
+                console.log(
+                    "Authorization code received:",
+                    code ? "YES" : "NO"
+                );
+
+
+                if (!code) {
+                    throw new Error(
+                        "Discord did not return an authorization code."
+                    );
+                }
+
+
+                // ----------------------------------
+                // 3. SEND CODE TO OUR BACKEND
+                // ----------------------------------
+
+                status.textContent = "Authenticating...";
+
+
+                const response = await fetch(
+                    "/api/token",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            code: code
+                        })
+                    }
+                );
+
+
+                console.log(
+                    "Token server status:",
+                    response.status
+                );
+
+
+                if (!response.ok) {
+
+                    const errorText =
+                        await response.text();
+
+                    throw new Error(
+                        `Token server error ${response.status}: ${errorText}`
+                    );
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "Token response received:",
+                    data.access_token
+                        ? "ACCESS TOKEN OK"
+                        : "NO ACCESS TOKEN"
+                );
+
+
+                if (!data.access_token) {
+
+                    throw new Error(
+                        "Backend did not return an access token."
+                    );
+                }
+
+
+                // ----------------------------------
+                // 4. AUTHENTICATE DISCORD SDK
+                // ----------------------------------
+
+                await discordSdk.commands.authenticate({
+
+                    access_token:
+                        data.access_token
+
+                });
+
+
+                console.log(
+                    "Discord authentication successful!"
+                );
+
+
+                status.textContent =
+                    "Setting Moon RPC...";
+
+
+                // ----------------------------------
+                // 5. SET RICH PRESENCE
+                // ----------------------------------
+
+                await discordSdk.commands.setActivity({
+
+                    activity: {
+
+                        type: 0,
+
+                        details:
+                            "Moon — Your all-in-one Discord companion",
+
+                        state:
+                            "moonbot.qd.je",
+
+                        assets: {
+
+                            large_image:
+                                "moon",
+
+                            large_text:
+                                "Moon"
+
+                        }
+
+                    }
+
+                });
+
+
+                // ----------------------------------
+                // SUCCESS
+                // ----------------------------------
+
+                console.log(
+                    "================================"
+                );
+
+                console.log(
+                    "MOON RPC SET SUCCESSFULLY 🔥"
+                );
+
+                console.log(
+                    "================================"
+                );
+
+
+                status.textContent =
+                    "● Moon RPC Active 🔥";
+
 
             } catch (error) {
 
                 console.error(
-                    "Moon Activity connection failed:",
+                    "Moon Activity Error:",
                     error
                 );
 
+
+                status.textContent =
+                    "❌ " +
+                    (
+                        error?.message ||
+                        "Unknown error"
+                    );
+
+                status.classList.add("error");
+
             }
+
         }
 
+
+        // ==========================================
+        // RUN
+        // ==========================================
+
         start();
+
     </script>
 
 </body>
