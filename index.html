@@ -28,7 +28,7 @@
         }
 
         .logo {
-            font-size: 70px;
+            font-size: 80px;
             margin-bottom: 20px;
         }
 
@@ -48,11 +48,10 @@
             border-radius: 14px;
             background: #1b1c20;
             border: 1px solid #292a30;
-            color: #57f287;
         }
 
-        .error {
-            color: #ed4245;
+        #status {
+            color: #57f287;
         }
     </style>
 </head>
@@ -61,9 +60,7 @@
 
     <div class="container">
 
-        <div class="logo">
-            🌙
-        </div>
+        <div class="logo">🌙</div>
 
         <h1>Moon</h1>
 
@@ -79,59 +76,41 @@
 
     </div>
 
-
     <script type="module">
 
         import {
             DiscordSDK
         } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
-
-        // ==========================================
-        // CONFIG
-        // ==========================================
-
         const CLIENT_ID = "1510641116528250990";
 
+        const API_URL =
+            "https://moon-api.bloodeystill90.workers.dev";
 
-        // ==========================================
-        // DISCORD SDK
-        // ==========================================
+        const status =
+            document.getElementById("status");
 
-        const discordSdk = new DiscordSDK(CLIENT_ID);
+        const discordSdk =
+            new DiscordSDK(CLIENT_ID);
 
-        const status = document.getElementById("status");
-
-
-        // ==========================================
-        // START ACTIVITY
-        // ==========================================
 
         async function start() {
 
             try {
 
-                // ----------------------------------
-                // 1. CONNECT TO DISCORD
-                // ----------------------------------
+                status.textContent =
+                    "Connecting to Discord...";
 
-                status.textContent = "Connecting to Discord...";
 
+                // 1. Wait for Discord Activity
                 await discordSdk.ready();
 
-                console.log("Discord SDK ready!");
-                console.log(
-                    "Instance ID:",
-                    discordSdk.instanceId
-                );
+
+                status.textContent =
+                    "Authorizing...";
 
 
-                // ----------------------------------
-                // 2. AUTHORIZE USER
-                // ----------------------------------
-
-                status.textContent = "Authorizing...";
-
+                // 2. Authorize user
                 const { code } =
                     await discordSdk.commands.authorize({
 
@@ -152,80 +131,62 @@
 
 
                 console.log(
-                    "Authorization code received:",
-                    code ? "YES" : "NO"
+                    "Authorization code received"
                 );
 
 
-                if (!code) {
-                    throw new Error(
-                        "Discord did not return an authorization code."
+                status.textContent =
+                    "Authenticating...";
+
+
+                // 3. Send code to Cloudflare Worker
+                const response =
+                    await fetch(
+                        `${API_URL}/api/token`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                code
+                            })
+                        }
                     );
-                }
-
-
-                // ----------------------------------
-                // 3. SEND CODE TO OUR BACKEND
-                // ----------------------------------
-
-                status.textContent = "Authenticating...";
-
-
-                const response = await fetch("/.proxy/api/token", {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            code: code
-                        })
-                    }
-                );
-
-
-                console.log(
-                    "Token server status:",
-                    response.status
-                );
-
-
-                if (!response.ok) {
-
-                    const errorText =
-                        await response.text();
-
-                    throw new Error(
-                        `Token server error ${response.status}: ${errorText}`
-                    );
-                }
 
 
                 const data =
                     await response.json();
 
 
-                console.log(
-                    "Token response received:",
-                    data.access_token
-                        ? "ACCESS TOKEN OK"
-                        : "NO ACCESS TOKEN"
-                );
+                if (!response.ok) {
+
+                    throw new Error(
+                        data?.error ||
+                        "Token server error"
+                    );
+
+                }
 
 
                 if (!data.access_token) {
 
                     throw new Error(
-                        "Backend did not return an access token."
+                        "No access token received"
                     );
+
                 }
 
 
-                // ----------------------------------
-                // 4. AUTHENTICATE DISCORD SDK
-                // ----------------------------------
+                console.log(
+                    "Access token received"
+                );
 
+
+                // 4. Authenticate Activity
                 await discordSdk.commands.authenticate({
 
                     access_token:
@@ -235,18 +196,15 @@
 
 
                 console.log(
-                    "Discord authentication successful!"
+                    "Moon Activity authenticated!"
                 );
 
 
                 status.textContent =
-                    "Setting Moon RPC...";
+                    "Setting Rich Presence...";
 
 
-                // ----------------------------------
-                // 5. SET RICH PRESENCE
-                // ----------------------------------
-
+                // 5. Set Rich Presence
                 await discordSdk.commands.setActivity({
 
                     activity: {
@@ -257,16 +215,10 @@
                             "Moon — Your all-in-one Discord companion",
 
                         state:
-                            "moonbot.qd.je",
+                            "Using Moon Activity",
 
-                        assets: {
-
-                            large_image:
-                                "moon",
-
-                            large_text:
-                                "Moon"
-
+                        timestamps: {
+                            start: Date.now()
                         }
 
                     }
@@ -274,31 +226,19 @@
                 });
 
 
-                // ----------------------------------
-                // SUCCESS
-                // ----------------------------------
-
                 console.log(
-                    "================================"
-                );
-
-                console.log(
-                    "MOON RPC SET SUCCESSFULLY 🔥"
-                );
-
-                console.log(
-                    "================================"
+                    "RPC SET SUCCESSFULLY 🔥"
                 );
 
 
                 status.textContent =
-                    "● Moon RPC Active 🔥";
+                    "● Moon Rich Presence Active 🔥";
 
 
             } catch (error) {
 
                 console.error(
-                    "Moon Activity Error:",
+                    "Moon Activity error:",
                     error
                 );
 
@@ -310,16 +250,10 @@
                         "Unknown error"
                     );
 
-                status.classList.add("error");
-
             }
 
         }
 
-
-        // ==========================================
-        // RUN
-        // ==========================================
 
         start();
 
