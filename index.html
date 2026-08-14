@@ -20,14 +20,16 @@
 
         .box {
             text-align: center;
+            padding: 30px;
         }
 
         h1 {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        p {
-            opacity: 0.7;
+        #status {
+            white-space: pre-line;
+            opacity: 0.75;
         }
     </style>
 </head>
@@ -36,10 +38,55 @@
 
     <div class="box">
         <h1>Moon</h1>
-        <p id="status">Connecting to Discord...</p>
+        <p id="status">HTML loaded ✅</p>
     </div>
 
-    <script type="module" src="./main.js?v=2"></script>
+    <script type="module">
+
+        const status = document.getElementById("status");
+
+        status.textContent = "JavaScript loaded ✅";
+
+        async function start() {
+
+            try {
+
+                status.textContent = "Loading Discord SDK...";
+
+                const module = await import(
+                    "https://esm.sh/@discord/embedded-app-sdk@2.5.0"
+                );
+
+                status.textContent = "Discord SDK loaded ✅";
+
+                const { DiscordSDK } = module;
+
+                const CLIENT_ID = "1510641116528250990";
+
+                const discordSdk = new DiscordSDK(CLIENT_ID);
+
+                status.textContent = "Connecting to Discord...";
+
+                await discordSdk.ready();
+
+                status.textContent = "Discord Connected ✅";
+
+                console.log("Moon Activity connected!");
+                console.log("Instance ID:", discordSdk.instanceId);
+
+            } catch (error) {
+
+                console.error("Moon Activity error:", error);
+
+                status.textContent =
+                    "ERROR ❌\n\n" +
+                    (error?.message || String(error));
+            }
+        }
+
+        start();
+
+    </script>
 
 </body>
 </html>
