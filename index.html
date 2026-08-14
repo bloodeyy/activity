@@ -7,85 +7,107 @@
     <title>Moon Activity</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
+            background: #111214;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #111214;
-            color: white;
-            font-family: Arial, sans-serif;
         }
 
-        .box {
+        .container {
+            width: min(90%, 600px);
             text-align: center;
-            padding: 30px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            margin-bottom: 12px;
+            margin: 0;
+            font-size: 42px;
         }
 
-        #status {
-            white-space: pre-line;
-            opacity: 0.75;
+        .subtitle {
+            margin-top: 10px;
+            color: #a0a0a0;
+        }
+
+        .status {
+            margin-top: 30px;
+            padding: 18px;
+            border-radius: 14px;
+            background: #1b1c20;
+            border: 1px solid #292a30;
+        }
+
+        .connected {
+            color: #57f287;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="box">
+    <div class="container">
+
+        <div class="logo">
+            🌙
+        </div>
+
         <h1>Moon</h1>
-        <p id="status">HTML loaded ✅</p>
+
+        <p class="subtitle">
+            Your all-in-one Discord companion
+        </p>
+
+        <div class="status">
+            <div class="connected">
+                ● Discord Connected
+            </div>
+        </div>
+
     </div>
 
     <script type="module">
+        import {
+            DiscordSDK
+        } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
-        const status = document.getElementById("status");
+        const CLIENT_ID = "1510641116528250990";
 
-        status.textContent = "JavaScript loaded ✅";
+        const discordSdk = new DiscordSDK(CLIENT_ID);
 
         async function start() {
-
             try {
 
-                status.textContent = "Loading Discord SDK...";
-
-                const module = await import(
-                    "https://esm.sh/@discord/embedded-app-sdk@2.5.0"
-                );
-
-                status.textContent = "Discord SDK loaded ✅";
-
-                const { DiscordSDK } = module;
-
-                const CLIENT_ID = "1510641116528250990";
-
-                const discordSdk = new DiscordSDK(CLIENT_ID);
-
-                status.textContent = "Connecting to Discord...";
-
                 await discordSdk.ready();
-
-                status.textContent = "Discord Connected ✅";
 
                 console.log("Moon Activity connected!");
                 console.log("Instance ID:", discordSdk.instanceId);
 
             } catch (error) {
 
-                console.error("Moon Activity error:", error);
+                console.error(
+                    "Moon Activity connection failed:",
+                    error
+                );
 
-                status.textContent =
-                    "ERROR ❌\n\n" +
-                    (error?.message || String(error));
             }
         }
 
         start();
-
     </script>
 
 </body>
