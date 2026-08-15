@@ -79,13 +79,18 @@
     <script type="module">
 
         import {
-            DiscordSDK
+            DiscordSDK,
+            patchUrlMappings
         } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
         const CLIENT_ID = "1510641116528250990";
 
-        const API_URL =
-            "https://moon-api.bloodeystill90.workers.dev";
+        patchUrlMappings([
+    {
+        prefix: "/api",
+        target: "moon-api.bloodeystill90.workers.dev"
+    }
+]);
 
         const status =
             document.getElementById("status");
@@ -142,7 +147,7 @@
                 // 3. Send code to Cloudflare Worker
                 const response =
                     await fetch(
-                        `${API_URL}/api/token`,
+                        `/api/token`,
                         {
                             method: "POST",
 
