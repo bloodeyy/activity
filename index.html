@@ -1,246 +1,330 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Moon Activity</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
+        /* Discord Native Theme Colors */
         :root {
-            --bg-main: #060913;
-            --bg-sec: #0b1120;
-            --accent: #3b82f6;
+            --bg-primary: #111214;
+            --bg-secondary: #2b2d31;
+            --bg-tertiary: #1e1f22;
+            --text-normal: #dbdee1;
+            --text-muted: #949ba4;
+            --text-header: #f2f3f5;
+            --blurple: #5865F2;
+            --blurple-hover: #4752C4;
+            --green: #23a559;
         }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-main);
-            color: #e2e8f0;
-            overflow-x: hidden;
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            min-height: 100vh;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-        
-        /* Premium UI Elements */
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .avatar-glow {
-            box-shadow: 0 0 45px rgba(59, 130, 246, 0.5);
-        }
-        
-        .text-gradient {
-            background: linear-gradient(to right, #60a5fa, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            padding: 0;
+            font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in forwards;
-        }
-        .fade-out {
-            animation: fadeOut 0.5s ease-out forwards;
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-normal);
+            overflow-x: hidden;
+            /* Discord Activities pe mobile me height issue na ho uske liye */
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-10px); }
+        /* --- SCREEN 1: LOADING & AUTH UI --- */
+        #loading-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
         }
 
-        /* Nav Tabs Active State */
-        .tab-active {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.5);
-            color: #60a5fa;
+        .bot-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .loading-title {
+            color: var(--text-header);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .loading-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .status-box {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--bg-secondary);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 250px;
+            justify-content: center;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+            color: var(--blurple);
+        }
+
+        #status-text {
+            color: var(--text-normal);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* --- SCREEN 2: MAIN DASHBOARD --- */
+        #main-view {
+            display: none; /* Initially hidden */
+            padding: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .rpc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(35, 165, 89, 0.1);
+            color: var(--green);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            border: 1px solid rgba(35, 165, 89, 0.2);
+        }
+
+        .rpc-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .welcome-header {
+            font-size: 28px;
+            color: var(--text-header);
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .welcome-desc {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid var(--blurple);
+        }
+
+        /* Tabs UI */
+        .tabs-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-normal);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background-color: var(--blurple);
+            color: white;
+        }
+
+        .tab-btn:not(.active):hover {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .game-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--blurple);
+        }
+
+        .game-icon {
+            font-size: 32px;
+            color: var(--blurple);
+            margin-bottom: 16px;
+        }
+
+        .game-title {
+            color: var(--text-header);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .game-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .play-btn {
+            background-color: var(--blurple);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .play-btn:hover {
+            background-color: var(--blurple-hover);
+        }
+
+        .play-btn.disabled {
+            background-color: var(--bg-secondary);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Keyframes */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(88, 101, 242, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); }
         }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-500 selection:text-white">
-
-    <!-- Global Config (UI Only) -->
-    <script>
-        const UI_CONFIG = {
-            avatarURL: "https://cdn.discordapp.com/attachments/1529745932709531688/1530501409928249435/5c114a471b04238512080c445d417633.webp.jpg?ex=6a65ce03&is=6a647c83&hm=8ebf6c36bbc33bb44d67a388081036e67076922b89326607580d659006c909bc&"
-        };
-    </script>
-
-    <!-- Background Orbs (Always visible) -->
-    <div class="fixed top-1/4 left-1/4 w-72 md:w-96 h-72 md:h-96 bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20 pointer-events-none"></div>
-    <div class="fixed bottom-1/4 right-1/4 w-72 md:w-96 h-72 md:h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20 pointer-events-none"></div>
+<body>
 
     <!-- ========================================== -->
-    <!-- SCREEN 1: LOADING & AUTHENTICATING APP     -->
+    <!-- SCREEN 1: LOADING & AUTHENTICATION UI      -->
     <!-- ========================================== -->
-    <div id="loading-screen" class="min-h-screen flex items-center justify-center relative z-10 px-4 w-full">
-        <div class="glass-card rounded-3xl p-8 md:p-12 text-center max-w-md w-full border-t border-blue-500/30 shadow-2xl flex flex-col items-center">
-            
-            <div class="relative mb-8 mt-4">
-                <div class="absolute inset-0 bg-blue-500 rounded-full blur-xl opacity-40 animate-pulse"></div>
-                <img id="loading-avatar" src="" alt="Moon" class="w-28 h-28 rounded-full border-4 border-gray-800 relative z-10 avatar-glow animate-float object-cover">
-            </div>
-
-            <h1 class="text-3xl font-extrabold text-white mb-2 tracking-tight">Moon <span class="text-gradient">Activity</span></h1>
-            <p class="text-gray-400 text-sm mb-10">Your all-in-one Discord companion</p>
-
-            <div class="w-full bg-[#0b1120] rounded-2xl p-4 border border-gray-800 flex items-center justify-center gap-3">
-                <i id="loading-spinner" class="fas fa-circle-notch fa-spin text-blue-500 text-lg"></i>
-                <span id="auth-status-text" class="text-blue-400 font-mono text-sm font-semibold tracking-wide">Initializing SDK...</span>
-            </div>
+    <div id="loading-view">
+        <!-- Replace this src with your Moon Bot logo -->
+        <img src="https://cdn.discordapp.com/attachments/1529745932709531688/1530501409928249435/5c114a471b04238512080c445d417633.webp.jpg?ex=6a65ce03&is=6a647c83&hm=8ebf6c36bbc33bb44d67a388081036e67076922b89326607580d659006c909bc&" alt="Moon Logo" class="bot-logo">
+        <div class="loading-title">Moon Activity</div>
+        <div class="loading-subtitle">Your all-in-one Discord companion</div>
+        
+        <div class="status-box">
+            <i id="loading-spinner" class="fas fa-circle-notch spinner"></i>
+            <span id="status-text">Waking up Moon...</span>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- SCREEN 2: MAIN DASHBOARD (Hidden Initially)-->
-    <!-- ========================================== -->
-    <div id="main-dashboard" class="hidden min-h-screen flex flex-col relative z-10 w-full opacity-0">
-        
-        <!-- Header -->
-        <header class="glass-card border-b border-gray-800/50 sticky top-0 z-50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img id="dash-avatar" src="" alt="Moon" class="w-10 h-10 rounded-full border border-blue-500/50 object-cover">
-                    <span class="font-bold text-xl text-white tracking-wide">Moon</span>
-                </div>
-                <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full">
-                    <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-green-400 text-xs font-bold uppercase tracking-wider">RPC Active</span>
-                </div>
-            </div>
-        </header>
 
-        <!-- Main Content -->
-        <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <!-- ========================================== -->
+    <!-- SCREEN 2: MAIN ACTIVITY DASHBOARD          -->
+    <!-- ========================================== -->
+    <div id="main-view">
+        <div class="rpc-badge">
+            <div class="rpc-dot"></div>
+            Custom RPC Active
+        </div>
+
+        <h1 class="welcome-header">Welcome to Moon Activity!</h1>
+        <div class="welcome-desc">
+            By launching this activity, you have automatically unlocked a <strong>Custom Rich Presence</strong> on your Discord profile! But that's not all—this space is your ultimate playground. Play interactive mini-games directly within Discord, hang out with friends, and explore exclusive features.
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-container">
+            <button class="tab-btn active"><i class="fas fa-gamepad"></i> Mini Games</button>
+            <button class="tab-btn"><i class="fas fa-tools"></i> Utilities</button>
+            <button class="tab-btn"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+
+        <!-- GAMES GRID -->
+        <div class="games-grid">
             
-            <!-- About/Hero Banner -->
-            <div class="glass-card rounded-3xl p-8 md:p-10 mb-10 border-l-4 border-blue-500 relative overflow-hidden group hover:border-purple-500 transition-colors duration-500">
-                <div class="absolute -right-20 -top-20 text-9xl text-white/5 group-hover:text-purple-500/10 transition-colors duration-500 pointer-events-none">
-                    <i class="fas fa-moon"></i>
-                </div>
-                <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-4 relative z-10">Welcome to Moon Activity!</h2>
-                <p class="text-gray-400 text-base md:text-lg max-w-3xl leading-relaxed relative z-10">
-                    By launching this activity, you have automatically unlocked a **Custom Rich Presence** on your Discord profile! But that's not all—this space is your ultimate playground. Play interactive mini-games directly within Discord, hang out with friends, and explore exclusive bot features without leaving the chat.
-                </p>
+            <!-- Game 1: Tic Tac Toe -->
+            <div class="game-card">
+                <i class="fas fa-hashtag game-icon"></i>
+                <div class="game-title">Tic Tac Toe</div>
+                <div class="game-desc">The classic game of X's and O's. Challenge a friend or play against the bot directly inside this activity. Coming very soon!</div>
+                <button class="play-btn">Play Now</button>
             </div>
 
-            <!-- Tab Navigation -->
-            <div class="flex items-center gap-4 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-                <button class="px-6 py-2.5 rounded-full font-bold text-sm transition-all tab-active flex items-center gap-2 whitespace-nowrap">
-                    <i class="fas fa-gamepad"></i> Mini Games
-                </button>
-                <button class="px-6 py-2.5 rounded-full font-bold text-sm text-gray-400 hover:text-white glass-card hover:bg-white/5 transition-all flex items-center gap-2 whitespace-nowrap cursor-not-allowed opacity-60">
-                    <i class="fas fa-layer-group"></i> Utilities (Soon)
-                </button>
-                <button class="px-6 py-2.5 rounded-full font-bold text-sm text-gray-400 hover:text-white glass-card hover:bg-white/5 transition-all flex items-center gap-2 whitespace-nowrap cursor-not-allowed opacity-60">
-                    <i class="fas fa-cog"></i> Settings (Soon)
-                </button>
+            <!-- Game 2: Mystery Game -->
+            <div class="game-card">
+                <i class="fas fa-question-circle game-icon" style="color: var(--text-muted);"></i>
+                <div class="game-title">Mystery Game</div>
+                <div class="game-desc">More exciting multiplayer and solo games are being developed. Stay tuned for updates!</div>
+                <button class="play-btn disabled">Coming Soon</button>
             </div>
 
-            <!-- Games Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Game Card 1: Tic Tac Toe (Placeholder) -->
-                <div class="glass-card rounded-3xl p-6 border-t border-purple-500/30 hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-3xl text-white mb-6 shadow-lg shadow-purple-500/30">
-                        <i class="fas fa-hashtag"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Tic Tac Toe</h3>
-                    <p class="text-gray-400 text-sm mb-6 flex-grow">The classic game of X's and O's. Challenge a friend or play against the bot directly inside this activity. Coming very soon!</p>
-                    
-                    <button class="w-full py-3 rounded-xl bg-white/5 border border-gray-700 text-gray-300 font-bold hover:bg-purple-600 hover:border-purple-500 hover:text-white transition-all mt-auto flex items-center justify-center gap-2">
-                        <i class="fas fa-play"></i> Play Now
-                    </button>
-                </div>
-
-                <!-- Game Card 2: Placeholder for future -->
-                <div class="glass-card rounded-3xl p-6 border-t border-gray-700 flex flex-col h-full opacity-50">
-                    <div class="w-16 h-16 rounded-2xl bg-gray-800 flex items-center justify-center text-3xl text-gray-500 mb-6">
-                        <i class="fas fa-question"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-300 mb-2">Mystery Game</h3>
-                    <p class="text-gray-500 text-sm mb-6 flex-grow">More exciting multiplayer and solo games are being developed. Stay tuned for updates!</p>
-                    <button class="w-full py-3 rounded-xl bg-gray-900 border border-gray-800 text-gray-600 font-bold cursor-not-allowed mt-auto">
-                        Coming Soon
-                    </button>
-                </div>
-
-            </div>
-        </main>
+        </div>
     </div>
 
 
     <!-- ========================================== -->
-    <!-- LOGIC & SDK INTEGRATION (UNCHANGED API)    -->
+    <!-- LOGIC: DISCORD SDK & CLOUDFLARE AUTH       -->
     <!-- ========================================== -->
     <script type="module">
         import { DiscordSDK, patchUrlMappings } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
-        // Pre-fill UI Images
-        document.getElementById('loading-avatar').src = UI_CONFIG.avatarURL;
-        document.getElementById('dash-avatar').src = UI_CONFIG.avatarURL;
-
-        // UI Helper Functions
-        const uiText = document.getElementById("auth-status-text");
-        const uiSpinner = document.getElementById("loading-spinner");
-        const loadingScreen = document.getElementById("loading-screen");
-        const mainDashboard = document.getElementById("main-dashboard");
-
-        function updateUIStatus(text, isError = false, isSuccess = false) {
-            uiText.textContent = text;
-            if (isError) {
-                uiText.classList.replace("text-blue-400", "text-red-400");
-                uiSpinner.classList.replace("fa-circle-notch", "fa-times-circle");
-                uiSpinner.classList.replace("fa-spin", "text-red-500");
-            } else if (isSuccess) {
-                uiText.classList.replace("text-blue-400", "text-green-400");
-                uiSpinner.classList.replace("fa-circle-notch", "fa-check-circle");
-                uiSpinner.classList.replace("fa-spin", "text-green-500");
-                
-                // Switch Screens after a short delay for smooth effect
-                setTimeout(() => {
-                    loadingScreen.classList.add("fade-out");
-                    setTimeout(() => {
-                        loadingScreen.style.display = "none";
-                        mainDashboard.classList.remove("hidden");
-                        mainDashboard.classList.add("fade-in");
-                    }, 500); // wait for fade out
-                }, 1000);
-            }
-        }
-
-        // ==========================================
-        // ORIGINAL LOGIC (Provided by User)
-        // ==========================================
         const CLIENT_ID = "1510641116528250990";
 
         patchUrlMappings([
@@ -250,18 +334,30 @@
             }
         ]);
 
+        const statusText = document.getElementById("status-text");
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const loadingView = document.getElementById("loading-view");
+        const mainView = document.getElementById("main-view");
+
         const discordSdk = new DiscordSDK(CLIENT_ID);
+
+        // Helper to update UI Text safely
+        function updateStatus(msg) {
+            statusText.textContent = msg;
+        }
 
         async function start() {
             try {
-                updateUIStatus("Connecting to Discord...");
+                // 1. Initial Loading Wait (4-5 Seconds Custom Delay)
+                updateStatus("Loading Moon Activity...");
+                await new Promise(resolve => setTimeout(resolve, 4000));
 
-                // 1. Wait for Discord Activity
+                updateStatus("Connecting to Discord...");
+                // 2. Wait for Discord Activity
                 await discordSdk.ready();
 
-                updateUIStatus("Authorizing via Discord...");
-
-                // 2. Authorize user
+                updateStatus("Authorizing...");
+                // 3. Authorize user
                 const { code } = await discordSdk.commands.authorize({
                     client_id: CLIENT_ID,
                     response_type: "code",
@@ -274,9 +370,9 @@
                 });
 
                 console.log("Authorization code received");
-                updateUIStatus("Fetching token from API...");
+                updateStatus("Authenticating...");
 
-                // 3. Send code to Cloudflare Worker
+                // 4. Send code to Cloudflare Worker
                 const response = await fetch(`/api/token`, {
                     method: "POST",
                     headers: {
@@ -290,22 +386,21 @@
                 if (!response.ok) {
                     throw new Error(data?.error || "Token server error");
                 }
-
                 if (!data.access_token) {
                     throw new Error("No access token received");
                 }
 
                 console.log("Access token received");
 
-                // 4. Authenticate Activity
+                // 5. Authenticate Activity
                 await discordSdk.commands.authenticate({
                     access_token: data.access_token
                 });
 
                 console.log("Moon Activity authenticated!");
-                updateUIStatus("Setting Custom Rich Presence...");
+                updateStatus("Setting Rich Presence...");
 
-                // 5. Set Rich Presence
+                // 6. Set Rich Presence
                 await discordSdk.commands.setActivity({
                     activity: {
                         type: 0,
@@ -318,20 +413,33 @@
                 });
 
                 console.log("RPC SET SUCCESSFULLY 🔥");
+                updateStatus("Redirecting to Dashboard...");
+                
+                // Show Success icon
+                loadingSpinner.classList.remove("fa-circle-notch", "spinner");
+                loadingSpinner.classList.add("fa-check-circle");
+                loadingSpinner.style.color = "var(--green)";
 
-                // Trigger Success UI & App Launch
-                updateUIStatus("Moon Activity Ready! 🔥", false, true);
+                // Brief pause before showing Main Dashboard
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Switch UI
+                loadingView.style.display = "none";
+                mainView.style.display = "block";
 
             } catch (error) {
                 console.error("Moon Activity error:", error);
-                // Trigger Error UI
-                updateUIStatus("Error: " + (error?.message || "Unknown error"), true);
+                
+                // Handle Error UI
+                loadingSpinner.classList.remove("fa-circle-notch", "spinner");
+                loadingSpinner.classList.add("fa-times-circle");
+                loadingSpinner.style.color = "#da373c"; // Discord Red
+                updateStatus("Error: " + (error?.message || "Unknown error"));
             }
         }
 
-        // Start the process
+        // Start execution
         start();
-
     </script>
 </body>
 </html>
