@@ -40,7 +40,7 @@
             flex-direction: column;
         }
 
-        /* --- SCREEN 1: LOADING & AUTH UI --- */
+        /* Loading & UI Styles */
         #loading-view {
             display: flex;
             flex-direction: column;
@@ -62,18 +62,8 @@
             object-fit: cover;
         }
 
-        .loading-title {
-            color: var(--text-header);
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .loading-subtitle {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+        .loading-title { color: var(--text-header); font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .loading-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
 
         .status-box {
             background-color: var(--bg-tertiary);
@@ -87,328 +77,90 @@
             justify-content: center;
         }
 
-        .spinner {
-            animation: spin 1s linear infinite;
-            color: var(--blurple);
-        }
+        .spinner { animation: spin 1s linear infinite; color: var(--blurple); }
+        #status-text { color: var(--text-normal); font-size: 14px; font-weight: 500; }
 
-        #status-text {
-            color: var(--text-normal);
-            font-size: 14px;
-            font-weight: 500;
-        }
+        /* App View */
+        #app-view { display: none; height: 100%; width: 100%; }
+        #full-screen-layout { padding: 24px; max-width: 900px; margin: 0 auto; width: 100%; overflow-y: auto; height: 100%; position: relative; }
 
-
-        /* --- SCREEN 2: MAIN DASHBOARD --- */
-        #app-view {
-            display: none; 
-            height: 100%;
-            width: 100%;
-        }
-
-        #full-screen-layout {
-            padding: 24px;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-            overflow-y: auto;
-            height: 100%;
-            position: relative;
-        }
-
-        /* Top Header */
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .main-header-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            object-fit: cover;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            border: 2px solid var(--bg-secondary);
-        }
+        .main-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .main-header-logo { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid var(--bg-secondary); }
 
         .website-btn {
-            background-color: var(--bg-tertiary);
-            color: var(--text-normal);
-            border: 1px solid var(--bg-secondary);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            background-color: var(--bg-tertiary); color: var(--text-normal); border: 1px solid var(--bg-secondary);
+            padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;
+            display: flex; align-items: center; gap: 8px; transition: all 0.2s;
         }
-        
-        .website-btn:hover {
-            background-color: var(--blurple);
-            border-color: var(--blurple);
-            color: white;
-        }
+        .website-btn:hover { background-color: var(--blurple); border-color: var(--blurple); color: white; }
 
-        .welcome-header {
-            font-size: 32px;
-            color: var(--text-header);
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
+        .welcome-header { font-size: 32px; color: var(--text-header); margin-bottom: 20px; font-weight: 800; }
         .welcome-desc {
-            color: var(--text-normal);
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            background: var(--bg-tertiary);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid var(--blurple);
+            color: var(--text-normal); font-size: 15px; line-height: 1.6; margin-bottom: 30px;
+            background: var(--bg-tertiary); padding: 20px; border-radius: 12px; border-left: 4px solid var(--blurple);
         }
 
-        /* Tabs UI */
-        .tabs-container {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-
+        /* Tabs */
+        .tabs-container { display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
         .tab-btn {
-            background-color: var(--bg-tertiary);
-            color: var(--text-normal);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background-color: var(--bg-tertiary); color: var(--text-normal); border: none; padding: 10px 24px;
+            border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
         }
+        .tab-btn.active { background-color: var(--blurple); color: white; }
+        .tab-btn:not(.active):hover { background-color: var(--bg-secondary); }
 
-        .tab-btn.active {
-            background-color: var(--blurple);
-            color: white;
-        }
+        .tab-content { display: none; padding-bottom: 40px; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
 
-        .tab-btn:not(.active):hover {
-            background-color: var(--bg-secondary);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            padding-bottom: 40px;
-        }
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        /* Grid Layouts */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-
-        /* Cards */
-        .card {
-            background-color: var(--bg-tertiary);
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            border-color: var(--blurple);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .card-icon {
-            font-size: 28px;
-            color: var(--blurple);
-        }
-
-        .card-tags {
-            display: flex;
-            gap: 6px;
-        }
-
-        .tag {
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        /* Grid & Cards */
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .card { background-color: var(--bg-tertiary); border-radius: 12px; padding: 24px; border: 1px solid var(--bg-secondary); display: flex; flex-direction: column; transition: transform 0.2s; }
+        .card:hover { border-color: var(--blurple); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .card-icon { font-size: 28px; color: var(--blurple); }
+        .card-tags { display: flex; gap: 6px; }
+        .tag { font-size: 10px; padding: 4px 8px; border-radius: 12px; font-weight: 700; text-transform: uppercase; }
+        .tag-util { background: rgba(35, 165, 89, 0.2); color: var(--green); }
         .tag-solo { background: rgba(88, 101, 242, 0.2); color: var(--blurple); }
         .tag-duo { background: rgba(218, 55, 60, 0.2); color: var(--red); }
-        .tag-util { background: rgba(35, 165, 89, 0.2); color: var(--green); }
+        .card-title { color: var(--text-header); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .card-desc { color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
 
-        .card-title {
-            color: var(--text-header);
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--blurple);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-        }
+        .btn-primary { background-color: var(--blurple); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
         .btn-primary:hover { background-color: var(--blurple-hover); }
 
-        .btn-secondary {
-            background-color: var(--bg-secondary);
-            color: var(--text-normal);
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-        }
+        .btn-group { display: flex; gap: 8px; }
+        .btn-secondary { background-color: var(--bg-secondary); color: var(--text-normal); border: none; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; text-align: center;}
         .btn-secondary:hover { background-color: #3b3d44; }
 
-        /* Fake Inputs for Utilities */
-        .util-input {
-            width: 100%;
-            background: var(--bg-primary);
-            border: 1px solid var(--bg-secondary);
-            color: var(--text-normal);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            outline: none;
-            font-family: monospace;
-        }
+        .util-input { width: 100%; background: var(--bg-primary); border: 1px solid var(--bg-secondary); color: var(--text-normal); padding: 10px; border-radius: 6px; margin-bottom: 12px; outline: none; font-family: monospace; }
         .util-input:focus { border-color: var(--blurple); }
 
         /* Game Overlay Modal */
-        #game-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .game-modal {
-            background: var(--bg-tertiary);
-            width: 100%;
-            max-width: 400px;
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            border: 1px solid var(--bg-secondary);
-        }
+        #game-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .game-modal { background: var(--bg-tertiary); width: 100%; max-width: 400px; border-radius: 16px; padding: 24px; text-align: center; border: 1px solid var(--bg-secondary); }
         .modal-icon { font-size: 40px; color: var(--blurple); margin-bottom: 16px; }
         .modal-title { color: white; font-size: 24px; font-weight: bold; margin-bottom: 8px; }
-        .modal-text { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+        .modal-text { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
         .modal-close { background: var(--bg-secondary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
-        .modal-close:hover { background: #3b3d44; }
 
+        /* Mini Screen */
+        #mini-screen-layout { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; text-align: center; padding: 10px; }
+        .mini-logo { width: 70px; height: 70px; border-radius: 16px; margin-bottom: 12px; object-fit: cover; }
+        .mini-title { color: var(--text-header); font-weight: 700; font-size: 16px; }
 
-        /* --- MINI SCREEN (PIP) UI --- */
-        #mini-screen-layout {
-            display: none; 
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .mini-logo {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            object-fit: cover;
-        }
-        
-        .mini-title {
-            color: var(--text-header);
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-
-        /* --- RESPONSIVE MEDIA QUERIES --- */
         @media (max-width: 350px), (max-height: 400px) {
             #full-screen-layout, #game-overlay { display: none !important; }
             #mini-screen-layout { display: flex !important; }
         }
 
-        /* Keyframes */
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(88, 101, 242, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); }
-        }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(88, 101, 242, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(88, 101, 242, 0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- YAHAN APNE BOT KE LOGO AUR WEBSITE KA LINK DAALEIN -->
     <script>
         const UI_CONFIG = {
             botLogoURL: "https://cdn.discordapp.com/attachments/1524773685796274249/1538278825756991568/c7935624e75190cf8cc8203bd49d7fa4.jpg?ex=6a84138b&is=6a82c20b&hm=b1d9a27667cedb6a932ca24f50aeafeebfec550ff01e4e196860e2b2231648ff&",
@@ -416,31 +168,21 @@
         };
     </script>
 
-
-    <!-- ========================================== -->
-    <!-- SCREEN 1: LOADING & AUTHENTICATION UI      -->
-    <!-- ========================================== -->
+    <!-- LOADING SCREEN -->
     <div id="loading-view">
         <img id="loading-logo" src="" alt="Moon Logo" class="bot-logo">
         <div class="loading-title">Moon Activity</div>
         <div class="loading-subtitle">Your all-in-one Discord companion</div>
-        
         <div class="status-box">
             <i id="loading-spinner" class="fas fa-circle-notch spinner"></i>
             <span id="status-text">Waking up Moon...</span>
         </div>
     </div>
 
-
-    <!-- ========================================== -->
-    <!-- SCREEN 2: MAIN APP (HANDLES BOTH VIEWS)    -->
-    <!-- ========================================== -->
+    <!-- MAIN APP SCREEN -->
     <div id="app-view">
-        
-        <!-- FULL SCREEN VIEW -->
         <div id="full-screen-layout">
             
-            <!-- Top Header (Logo + Website Button) -->
             <div class="main-header">
                 <img id="main-header-logo" src="" alt="Moon" class="main-header-logo">
                 <a id="website-link" href="#" target="_blank" class="website-btn">
@@ -448,9 +190,7 @@
                 </a>
             </div>
 
-            <!-- Header & Welcome Box -->
             <h1 class="welcome-header">Welcome to Moon!</h1>
-            
             <div class="welcome-desc">
                 By launching this activity, you have automatically unlocked a <strong>Custom Rich Presence</strong> on your Discord profile! But that's not all—this space is your ultimate playground. Explore essential Discord utilities, play mini-games solo or with friends, and enjoy exclusive bot features.
             </div>
@@ -462,51 +202,65 @@
                 <button class="tab-btn" onclick="switchTab('settings', this)"><i class="fas fa-cog"></i> Settings</button>
             </div>
 
-            <!-- TAB CONTENT: UTILITIES -->
+            <!-- TAB 1: UTILITIES -->
             <div id="tab-utilities" class="tab-content active">
                 <div class="grid-layout">
-                    <!-- Tool 1 -->
+                    <!-- Translator -->
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-clock card-icon"></i>
-                            <div class="card-tags"><span class="tag tag-util">Tool</span></div>
-                        </div>
+                        <div class="card-header"><i class="fas fa-language card-icon" style="color: #3498db;"></i><div class="card-tags"><span class="tag tag-util">Tool</span></div></div>
+                        <div class="card-title">Translator</div>
+                        <div class="card-desc">Translate any text quickly directly in Discord.</div>
+                        <input type="text" class="util-input" id="trans-input" placeholder="Text to translate...">
+                        <select class="util-input" id="trans-lang">
+                            <option value="es">Spanish</option>
+                            <option value="hi">Hindi</option>
+                            <option value="fr">French</option>
+                            <option value="ja">Japanese</option>
+                        </select>
+                        <button class="btn-primary" id="trans-btn" style="background-color: #3498db;">Translate</button>
+                    </div>
+
+                    <!-- Calculator -->
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-calculator card-icon" style="color: #9b59b6;"></i><div class="card-tags"><span class="tag tag-util">Tool</span></div></div>
+                        <div class="card-title">Calculator</div>
+                        <div class="card-desc">Quick math solving without opening another app.</div>
+                        <input type="text" class="util-input" id="calc-input" placeholder="e.g. 50 * 4 + 10">
+                        <button class="btn-primary" id="calc-btn" style="background-color: #9b59b6;">Calculate</button>
+                    </div>
+
+                    <!-- Timestamp Generator -->
+                    <div class="card">
+                        <div class="card-header"><i class="fas fa-clock card-icon"></i><div class="card-tags"><span class="tag tag-util">Tool</span></div></div>
                         <div class="card-title">Timestamp Generator</div>
-                        <div class="card-desc">Generate dynamic Discord timestamps (e.g. "in 2 hours", "yesterday") easily.</div>
+                        <div class="card-desc">Generate dynamic Discord timestamps easily.</div>
                         <input type="datetime-local" class="util-input" id="time-input">
-                        <button class="btn-primary" onclick="alert('Timestamp copied to clipboard! (Feature coming soon)')">Generate Code</button>
+                        <button class="btn-primary" id="time-btn">Generate Code</button>
                     </div>
 
-                    <!-- Tool 2 -->
+                    <!-- Avatar Fetcher -->
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-image card-icon" style="color: var(--yellow);"></i>
-                            <div class="card-tags"><span class="tag tag-util">Tool</span></div>
-                        </div>
+                        <div class="card-header"><i class="fas fa-image card-icon" style="color: var(--yellow);"></i><div class="card-tags"><span class="tag tag-util">Tool</span></div></div>
                         <div class="card-title">Avatar Fetcher</div>
-                        <div class="card-desc">Get the high-resolution avatar URL of any Discord User ID instantly.</div>
-                        <input type="text" class="util-input" placeholder="Enter User ID (e.g. 123456789)">
-                        <button class="btn-primary" style="background-color: var(--yellow); color: #000;" onclick="alert('Fetching Avatar... (Feature coming soon)')">Fetch Avatar</button>
+                        <div class="card-desc">Look up a user's profile externally using their ID.</div>
+                        <input type="text" class="util-input" id="avatar-input" placeholder="Enter User ID">
+                        <button class="btn-primary" id="avatar-btn" style="background-color: var(--yellow); color: #000;">Lookup User</button>
                     </div>
 
-                    <!-- Tool 3 -->
+                    <!-- Embed Color Picker -->
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-palette card-icon" style="color: #ed4245;"></i>
-                            <div class="card-tags"><span class="tag tag-util">Tool</span></div>
-                        </div>
-                        <div class="card-title">Embed Color Picker</div>
-                        <div class="card-desc">Find the perfect HEX color code for your Discord bot embeds.</div>
-                        <input type="color" class="util-input" style="height: 40px; padding: 2px; cursor: pointer;">
-                        <button class="btn-secondary" onclick="alert('HEX Copied! (Feature coming soon)')">Copy HEX</button>
+                        <div class="card-header"><i class="fas fa-palette card-icon" style="color: #ed4245;"></i><div class="card-tags"><span class="tag tag-util">Tool</span></div></div>
+                        <div class="card-title">HEX Color Picker</div>
+                        <div class="card-desc">Find the perfect HEX code for your bot embeds.</div>
+                        <input type="color" class="util-input" id="hex-input" style="height: 40px; padding: 2px; cursor: pointer;">
+                        <button class="btn-secondary" id="hex-btn">Copy HEX</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB CONTENT: GAMES (9 GAMES) -->
+            <!-- TAB 2: GAMES -->
             <div id="tab-games" class="tab-content">
                 <div class="grid-layout">
-                    
                     <!-- Game 1 -->
                     <div class="card">
                         <div class="card-header">
@@ -516,11 +270,10 @@
                         <div class="card-title">Tic Tac Toe</div>
                         <div class="card-desc">The classic game of X's and O's. Challenge a friend or play against Moon Bot.</div>
                         <div class="btn-group">
-                            <button class="btn-secondary" onclick="launchGame('Tic Tac Toe', 'Solo')"><i class="fas fa-robot"></i> Solo</button>
-                            <button class="btn-primary" onclick="launchGame('Tic Tac Toe', 'Duo')"><i class="fas fa-user-friends"></i> Duo</button>
+                            <button class="btn-secondary" onclick="launchGame('Tic Tac Toe', 'Solo')">Solo</button>
+                            <button class="btn-primary" onclick="launchGame('Tic Tac Toe', 'Duo')">Duo</button>
                         </div>
                     </div>
-
                     <!-- Game 2 -->
                     <div class="card">
                         <div class="card-header">
@@ -530,11 +283,10 @@
                         <div class="card-title">RPS Clash</div>
                         <div class="card-desc">Rock, Paper, Scissors! Test your luck and predict your opponent's move.</div>
                         <div class="btn-group">
-                            <button class="btn-secondary" onclick="launchGame('Rock Paper Scissors', 'Solo')"><i class="fas fa-robot"></i> Solo</button>
-                            <button class="btn-primary" style="background-color: var(--red);" onclick="launchGame('Rock Paper Scissors', 'Duo')"><i class="fas fa-user-friends"></i> Duo</button>
+                            <button class="btn-secondary" onclick="launchGame('Rock Paper Scissors', 'Solo')">Solo</button>
+                            <button class="btn-primary" style="background-color: var(--red);" onclick="launchGame('Rock Paper Scissors', 'Duo')">Duo</button>
                         </div>
                     </div>
-
                     <!-- Game 3 -->
                     <div class="card">
                         <div class="card-header">
@@ -545,264 +297,136 @@
                         <div class="card-desc">Moon thinks of a number between 1 and 100. Can you guess it in 5 tries?</div>
                         <button class="btn-primary" style="background-color: var(--yellow); color: #000;" onclick="launchGame('Guess The Number', 'Solo')">Play Solo</button>
                     </div>
-
-                    <!-- Game 4 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-circle card-icon" style="color: #e67e22;"></i>
-                            <div class="card-tags"><span class="tag tag-duo">Duo</span></div>
-                        </div>
-                        <div class="card-title">Connect 4</div>
-                        <div class="card-desc">Drop your discs into the grid and be the first to get 4 in a row!</div>
-                        <button class="btn-primary" style="background-color: #e67e22;" onclick="launchGame('Connect 4', 'Duo')">Invite Friend</button>
-                    </div>
-
-                    <!-- Game 5 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-font card-icon" style="color: #2ecc71;"></i>
-                            <div class="card-tags"><span class="tag tag-solo">Solo</span> <span class="tag tag-duo">Duo</span></div>
-                        </div>
-                        <div class="card-title">Word Hangman</div>
-                        <div class="card-desc">Guess the hidden word letter by letter before the stickman is fully drawn.</div>
-                        <div class="btn-group">
-                            <button class="btn-secondary" onclick="launchGame('Word Hangman', 'Solo')">Solo</button>
-                            <button class="btn-primary" style="background-color: #2ecc71;" onclick="launchGame('Word Hangman', 'Duo')">Duo</button>
-                        </div>
-                    </div>
-
-                    <!-- Game 6 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-clone card-icon" style="color: #9b59b6;"></i>
-                            <div class="card-tags"><span class="tag tag-solo">Solo</span></div>
-                        </div>
-                        <div class="card-title">Memory Match</div>
-                        <div class="card-desc">Flip the cards and find the matching pairs as fast as you can.</div>
-                        <button class="btn-primary" style="background-color: #9b59b6;" onclick="launchGame('Memory Match', 'Solo')">Play Solo</button>
-                    </div>
-
-                    <!-- Game 7 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-brain card-icon" style="color: #e84393;"></i>
-                            <div class="card-tags"><span class="tag tag-solo">Solo</span> <span class="tag tag-duo">Duo</span></div>
-                        </div>
-                        <div class="card-title">Trivia Quiz</div>
-                        <div class="card-desc">Test your knowledge across various categories. Who is the smartest?</div>
-                        <div class="btn-group">
-                            <button class="btn-secondary" onclick="launchGame('Trivia Quiz', 'Solo')">Solo</button>
-                            <button class="btn-primary" style="background-color: #e84393;" onclick="launchGame('Trivia Quiz', 'Duo')">Duo</button>
-                        </div>
-                    </div>
-
-                    <!-- Game 8 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-masks-theater card-icon" style="color: #00cec9;"></i>
-                            <div class="card-tags"><span class="tag tag-duo">Duo</span></div>
-                        </div>
-                        <div class="card-title">Truth or Dare</div>
-                        <div class="card-desc">The ultimate party game brought to Discord. Perfect for hanging out in VC.</div>
-                        <button class="btn-primary" style="background-color: #00cec9; color: #000;" onclick="launchGame('Truth or Dare', 'Duo')">Invite Friends</button>
-                    </div>
-
-                    <!-- Game 9 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-bolt card-icon" style="color: var(--yellow);"></i>
-                            <div class="card-tags"><span class="tag tag-solo">Solo</span></div>
-                        </div>
-                        <div class="card-title">Reaction Speed</div>
-                        <div class="card-desc">Wait for the green light and click as fast as possible to test your reflexes!</div>
-                        <button class="btn-primary" style="background-color: var(--yellow); color: #000;" onclick="launchGame('Reaction Speed', 'Solo')">Play Solo</button>
-                    </div>
-
+                    <!-- Add more games here in future -->
                 </div>
             </div>
 
-            <!-- TAB CONTENT: SETTINGS -->
+            <!-- TAB 3: SETTINGS -->
             <div id="tab-settings" class="tab-content">
                 <div class="card" style="text-align: center; padding: 40px;">
                     <i class="fas fa-tools card-icon" style="font-size: 50px; margin-bottom: 20px; color: var(--text-muted);"></i>
                     <h2 class="welcome-header">Settings Panel</h2>
-                    <p class="card-desc">Personalize your Moon Activity experience. Settings are currently under development and will be available in the next update.</p>
+                    <p class="card-desc">Personalize your Moon Activity experience. Available in the next update.</p>
                 </div>
             </div>
 
-            <!-- GAME LAUNCHER OVERLAY (Modal) -->
+            <!-- GAME LAUNCHER MODAL -->
             <div id="game-overlay">
                 <div class="game-modal">
                     <i class="fas fa-rocket modal-icon"></i>
                     <div class="modal-title" id="modal-game-name">Game Name</div>
                     <div class="modal-text" id="modal-game-mode">Mode: Solo</div>
-                    
                     <div class="status-box" style="margin-bottom: 24px; padding: 12px; background: var(--bg-primary);">
                         <i class="fas fa-circle-notch spinner" style="font-size: 20px;"></i>
-                        <span id="status-text" style="color: var(--text-muted);">Initializing game engine...</span>
+                        <span style="color: var(--text-muted); font-size: 14px;">Initializing game engine...</span>
                     </div>
-
                     <button class="modal-close" onclick="closeGame()">Cancel</button>
                 </div>
             </div>
-
         </div>
 
-        <!-- MINI SCREEN PIP VIEW (Minimize karne pe dikhega) -->
+        <!-- MINI SCREEN PIP VIEW -->
         <div id="mini-screen-layout">
             <img id="mini-screen-logo" src="" alt="Moon" class="mini-logo">
             <div class="mini-title">Moon Activity</div>
         </div>
-
     </div>
 
 
     <!-- ========================================== -->
-    <!-- LOGIC: UI INTERACTIONS & DISCORD SDK       -->
+    <!-- LOAD EXTERNAL UTILITY SCRIPTS HERE         -->
+    <!-- ========================================== -->
+    <script src="utilities/timestamps.js"></script>
+    <script src="utilities/avatar.js"></script>
+    <script src="utilities/hexcode.js"></script>
+    <script src="utilities/calculator.js"></script>
+    <script src="utilities/translator.js"></script>
+
+
+    <!-- ========================================== -->
+    <!-- UI LOGIC & DISCORD SDK INTEGRATION         -->
     <!-- ========================================== -->
     <script type="module">
         import { DiscordSDK, patchUrlMappings } from "https://esm.sh/@discord/embedded-app-sdk@2.5.0";
 
-        // ==========================================
-        // UI HELPERS (Tabs & Modals)
-        // ==========================================
-        
-        // 1. Setup Links & Images from Config
         document.getElementById("loading-logo").src = UI_CONFIG.botLogoURL;
         document.getElementById("main-header-logo").src = UI_CONFIG.botLogoURL;
         document.getElementById("mini-screen-logo").src = UI_CONFIG.botLogoURL;
         document.getElementById("website-link").href = UI_CONFIG.websiteURL;
 
-        // 2. Tab Switching Logic
         window.switchTab = function(tabName, btnElement) {
-            // Hide all contents
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            // Remove active from all buttons
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            // Show selected content & set active button
             document.getElementById(`tab-${tabName}`).classList.add('active');
             btnElement.classList.add('active');
         }
 
-        // 3. Game Overlay Logic
         window.launchGame = function(gameName, mode) {
             document.getElementById("modal-game-name").innerText = gameName;
-            
             if(mode === 'Duo') {
                 document.getElementById("modal-game-mode").innerHTML = `<span style="color: var(--blurple);"><i class="fas fa-user-friends"></i> Multiplayer (Waiting for players...)</span>`;
             } else {
                 document.getElementById("modal-game-mode").innerHTML = `<span style="color: var(--green);"><i class="fas fa-robot"></i> Solo vs Bot</span>`;
             }
-
             document.getElementById("game-overlay").style.display = "flex";
         }
-
         window.closeGame = function() {
             document.getElementById("game-overlay").style.display = "none";
         }
 
-        // ==========================================
-        // ORIGINAL DISCORD SDK AUTHENTICATION LOGIC
-        // ==========================================
-        
+        // --- SDK LOGIC ---
         const CLIENT_ID = "1510641116528250990";
-
-        patchUrlMappings([
-            {
-                prefix: "/api",
-                target: "moon-api.bloodeystill90.workers.dev"
-            }
-        ]);
-
+        patchUrlMappings([{ prefix: "/api", target: "moon-api.bloodeystill90.workers.dev" }]);
         const statusText = document.getElementById("status-text");
         const loadingSpinner = document.getElementById("loading-spinner");
         const loadingView = document.getElementById("loading-view");
         const appView = document.getElementById("app-view");
-
         const discordSdk = new DiscordSDK(CLIENT_ID);
 
-        function updateStatus(msg) {
-            statusText.textContent = msg;
-        }
+        function updateStatus(msg) { statusText.textContent = msg; }
 
         async function start() {
             try {
-                // Initial Delay 
                 updateStatus("Loading Moon Activity...");
                 await new Promise(resolve => setTimeout(resolve, 3000));
-
                 updateStatus("Connecting to Discord...");
                 await discordSdk.ready();
-
                 updateStatus("Authorizing...");
                 const { code } = await discordSdk.commands.authorize({
-                    client_id: CLIENT_ID,
-                    response_type: "code",
-                    state: "",
-                    prompt: "none",
-                    scope: [
-                        "identify",
-                        "rpc.activities.write"
-                    ]
+                    client_id: CLIENT_ID, response_type: "code", state: "", prompt: "none",
+                    scope: ["identify", "rpc.activities.write"]
                 });
-
-                console.log("Authorization code received");
                 updateStatus("Authenticating...");
-
                 const response = await fetch(`/api/token`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ code })
+                    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code })
                 });
-
                 const data = await response.json();
+                if (!response.ok) throw new Error(data?.error || "Token server error");
+                if (!data.access_token) throw new Error("No access token received");
 
-                if (!response.ok) {
-                    throw new Error(data?.error || "Token server error");
-                }
-                if (!data.access_token) {
-                    throw new Error("No access token received");
-                }
-
-                await discordSdk.commands.authenticate({
-                    access_token: data.access_token
-                });
-
+                await discordSdk.commands.authenticate({ access_token: data.access_token });
                 updateStatus("Setting Rich Presence...");
-
                 await discordSdk.commands.setActivity({
                     activity: {
-                        type: 0,
-                        details: "Moon — Your all-in-one Discord companion",
-                        state: "Using Moon Activity",
-                        timestamps: { start: Date.now() }
+                        type: 0, details: "Moon — Your all-in-one Discord companion",
+                        state: "Using Moon Activity", timestamps: { start: Date.now() }
                     }
                 });
 
                 updateStatus("Redirecting to Dashboard...");
-                
-                // Show Success icon
                 loadingSpinner.classList.remove("fa-circle-notch", "spinner");
                 loadingSpinner.classList.add("fa-check-circle");
                 loadingSpinner.style.color = "var(--green)";
-
                 await new Promise(resolve => setTimeout(resolve, 1000));
-
-                // Switch to Main App View
                 loadingView.style.display = "none";
                 appView.style.display = "block";
-
             } catch (error) {
-                console.error("Moon Activity error:", error);
                 loadingSpinner.classList.remove("fa-circle-notch", "spinner");
                 loadingSpinner.classList.add("fa-times-circle");
                 loadingSpinner.style.color = "var(--red)";
                 updateStatus("Error: " + (error?.message || "Unknown error"));
             }
         }
-
-        // Start Auth Execution
         start();
     </script>
 </body>
